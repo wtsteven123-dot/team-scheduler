@@ -417,19 +417,53 @@ async function fetchData(){const r=await fetch(`https://api.jsonbin.io/v3/b/${CF
 async function pushData(data){const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG_BIN}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':CFG_KEY},body:JSON.stringify(data)});if(!r.ok)throw new Error(`${r.status}`);}
 function setSyncBar(msg,cls){const el=document.getElementById('sync-bar');el.className='sync-bar '+cls;el.textContent=msg;}
 
+// ── LOCAL STORAGE BACKUP ──
+const LS_KEY='tsc_local_v2';
+function saveLocal(){
+  try{localStorage.setItem(LS_KEY,JSON.stringify({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,ts:Date.now()}));}catch(e){}
+}
+function loadLocal(){
+  try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;}
+}
+// Merge two slot objects {concertId:[slots]} — union of all slots
+function mergeSlots(a,b){
+  if(!a&&!b)return{};
+  if(!a)return b;if(!b)return a;
+  const result={...a};
+  for(const cid of Object.keys(b)){
+    if(!result[cid]){result[cid]=b[cid];}
+    else{
+      const keys=new Set(result[cid].map(slotsKey));
+      result[cid]=[...result[cid],...b[cid].filter(s=>!keys.has(slotsKey(s)))];
+    }
+  }
+  return result;
+}
+// Merge full dataset: remote wins on concerts list, slots are union
+function mergeData(remote,local){
+  if(!local)return remote;
+  if(!remote)return local;
+  const tm=NAMES.map((name,i)=>({
+    name:remote.tm?.[i]?.name||local.tm?.[i]?.name||name,
+    slots:mergeSlots(remote.tm?.[i]?.slots||{},local.tm?.[i]?.slots||{}),
+    warn:''
+  }));
+  // Use remote concerts if available, else local
+  const concerts=remote.concerts?.length?remote.concerts:(local.concerts||[]);
+  return{tm,concerts};
+}
+
 // ── STATE ──
-// tm[i].slots is now an object: { concertId: [{date, startTime, endTime}] }
 function getWeekStart(base){const d=new Date(base);const day=d.getDay();const diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);d.setHours(0,0,0,0);return d;}
 let weekStart=getWeekStart(now);
 let G={
-  act:0,           // active member tab
-  selConcert:null, // selected concert id
+  act:0,
+  selConcert:null,
   tm:NAMES.map(n=>({name:n,slots:{},warn:''})),
   concerts:[]
 };
 let saveTimeout=null,pendingConcert=null;
 
-// helpers for per-concert slots
 function getSlots(tmIdx,concertId){return(G.tm[tmIdx].slots&&G.tm[tmIdx].slots[concertId])||[];}
 function setSlots(tmIdx,concertId,arr){if(!G.tm[tmIdx].slots)G.tm[tmIdx].slots={};G.tm[tmIdx].slots[concertId]=arr;}
 function hasSlots(tmIdx,concertId){return getSlots(tmIdx,concertId).length>0;}
@@ -438,41 +472,71 @@ async function bootApp(){
   document.getElementById('setup-screen').style.display='none';
   document.getElementById('app').style.display='block';
   setSyncBar('데이터 불러오는 중…','sync-ing');
+
+  // 1) Load localStorage immediately so UI is never blank
+  const local=loadLocal();
+  if(local&&local.tm){
+    G.tm=NAMES.map((name,i)=>({name:local.tm[i]?.name||name,slots:local.tm[i]?.slots||{},warn:''}));
+    G.concerts=local.concerts||[];
+    if(G.concerts.length>0&&!G.selConcert)G.selConcert=cId(G.concerts[0]);
+    renderAll();
+  }
+
+  // 2) Fetch remote, merge, update
   try{
-    const data=await fetchData();
-    if(data&&data.tm){
-      G.tm=NAMES.map((name,i)=>({
-        name:data.tm[i]?.name||name,
-        slots:data.tm[i]?.slots||{},
-        warn:''
-      }));
-      G.concerts=data.concerts||[];
-      // Auto-select first concert if none selected
+    const remote=await fetchData();
+    if(remote&&remote.tm){
+      const merged=mergeData(remote,local);
+      G.tm=merged.tm;
+      G.concerts=merged.concerts;
       if(G.concerts.length>0&&!G.selConcert)G.selConcert=cId(G.concerts[0]);
+      // Push merged data back if local had something remote didn't
+      const localHasMore=local&&NAMES.some((_,i)=>{
+        const ls=local.tm?.[i]?.slots||{};
+        const rs=remote.tm?.[i]?.slots||{};
+        return Object.keys(ls).some(cid=>(ls[cid]||[]).length>(rs[cid]||[]).length);
+      });
+      if(localHasMore){
+        await pushData({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts});
+        setSyncBar('✓ 로컬 데이터 복원 완료','sync-ok');
+      }else{
+        setSyncBar('✓ 동기화 완료','sync-ok');
+      }
+      saveLocal();
     }
-    setSyncBar('✓ 동기화 완료','sync-ok');
-  }catch(e){setSyncBar('⚠ 오프라인 모드','sync-err');}
+  }catch(e){
+    setSyncBar('⚠ 오프라인 — 로컬 데이터로 표시 중','sync-err');
+  }
   renderAll();
+
+  // 3) Auto-refresh every 30s — merge remote into current state
   setInterval(async()=>{
     try{
-      const data=await fetchData();
-      if(data&&data.tm){
-        G.tm=NAMES.map((name,i)=>({name:data.tm[i]?.name||G.tm[i].name,slots:data.tm[i]?.slots||{},warn:G.tm[i].warn}));
-        G.concerts=data.concerts||[];
-        renderAll();setSyncBar('✓ 동기화 완료','sync-ok');
+      const remote=await fetchData();
+      if(remote&&remote.tm){
+        const cur={tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts};
+        const merged=mergeData(remote,cur);
+        G.tm=merged.tm;G.concerts=merged.concerts;
+        saveLocal();renderAll();setSyncBar('✓ 동기화 완료','sync-ok');
       }
     }catch(e){}
   },30000);
 }
 
 async function debounceSave(){
+  // Save to localStorage IMMEDIATELY (no debounce) so data is never lost on tab close
+  saveLocal();
+  // Push to JSONBin with short debounce to batch rapid changes
   clearTimeout(saveTimeout);
   saveTimeout=setTimeout(async()=>{
     setSyncBar('저장 중…','sync-ing');
     try{
       await pushData({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts});
+      saveLocal(); // update local timestamp after successful remote save
       setSyncBar('✓ 저장 완료','sync-ok');
-    }catch(e){setSyncBar('⚠ 저장 실패','sync-err');}
+    }catch(e){
+      setSyncBar('⚠ 원격 저장 실패 (로컬엔 저장됨)','sync-err');
+    }
   },800);
 }
 
