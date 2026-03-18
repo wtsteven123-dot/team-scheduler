@@ -11,8 +11,6 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:14px;background:#f2f1ec}
-
-/* SETUP */
 #setup-screen{position:fixed;inset:0;background:#0d0d1a;display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
 .setup-box{background:#141428;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:32px;width:100%;max-width:420px}
 .setup-box h2{color:white;font-size:18px;margin-bottom:6px}
@@ -24,54 +22,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .setup-err{color:#f87171;font-size:12px;margin-top:8px;display:none}
 .setup-note{color:#374151;font-size:11.5px;margin-top:16px;line-height:1.7;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
 .setup-note a{color:#818cf8;text-decoration:none}
-
-/* APP */
 #app{display:none;height:100vh;overflow:hidden}
 #wrap{display:flex;height:100%;position:relative}
-
 /* SIDEBAR */
 #sb{width:278px;min-width:278px;background:#0d0d1a;color:#e2e8f0;display:flex;flex-direction:column;overflow:hidden}
 .sbh{padding:13px 17px 11px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0}
 .sbh h2{font-size:15px;font-weight:600;color:white;letter-spacing:-.3px}
 .sbh p{font-size:11px;color:#475569;margin-top:1px}
-
-/* Scrollable area */
 #sbs{flex:1;overflow-y:auto;padding:0}
-
-/* Section blocks inside sbs */
-.sb-section{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
-.sb-sec-title{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#475569;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-.sb-sec-title span{color:#374151;font-size:11px;text-transform:none;letter-spacing:0;cursor:pointer;padding:2px 8px;background:rgba(255,255,255,.06);border-radius:5px}
-.sb-sec-title span:hover{background:rgba(255,255,255,.1)}
-
-/* Concert list (display only) */
-.concert-chip{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;margin-bottom:3px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);cursor:pointer;transition:.1s}
+.sb-section{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.sb-sec-hd-title{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#475569}
+.sb-sec-hd-btn{font-size:11px;color:#374151;text-transform:none;letter-spacing:0;cursor:pointer;padding:2px 8px;background:rgba(255,255,255,.06);border-radius:5px;border:none}
+.sb-sec-hd-btn:hover{background:rgba(255,255,255,.1);color:#94a3b8}
+/* Concert list */
+.concert-chip{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:7px;margin-bottom:2px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.18);cursor:pointer;transition:.1s}
 .concert-chip:hover{background:rgba(249,115,22,.15)}
-.concert-chip-dot{width:7px;height:7px;border-radius:50%;background:#f97316;flex-shrink:0}
+.concert-chip-dot{width:6px;height:6px;border-radius:50%;background:#f97316;flex-shrink:0}
 .concert-chip-name{font-size:12px;font-weight:600;color:#fb923c;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.concert-chip-date{font-size:10.5px;color:#64748b}
-.add-btn{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:6px;border-radius:7px;font-size:12px;font-weight:600;padding:7px;cursor:pointer;transition:.12s;width:100%}
-.add-btn-orange{background:rgba(249,115,22,.08);border:1px dashed rgba(249,115,22,.3);color:#f97316}
-.add-btn-orange:hover{background:rgba(249,115,22,.16)}
-.add-btn-purple{background:rgba(124,58,237,.1);border:1px dashed rgba(124,58,237,.35);color:#a78bfa}
-.add-btn-purple:hover{background:rgba(124,58,237,.18)}
-
-/* Rehearsal selector */
-.reh-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;margin-bottom:4px;border:1.5px solid rgba(255,255,255,.07);transition:.12s}
+.concert-chip-date{font-size:10px;color:#64748b;white-space:nowrap}
+.past-toggle{font-size:11px;color:#374151;cursor:pointer;padding:5px 0;display:flex;align-items:center;gap:4px}
+.past-toggle:hover{color:#64748b}
+.empty-msg{font-size:12px;color:#374151;padding:4px 0}
+/* Rehearsal list */
+.reh-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;cursor:pointer;margin-bottom:3px;border:1.5px solid rgba(255,255,255,.07);transition:.12s}
 .reh-item:hover{background:rgba(255,255,255,.05)}
-.reh-item.active{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.45)}
-.reh-dot{width:8px;height:8px;border-radius:50%;background:#a78bfa;flex-shrink:0}
+.reh-item.active{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.4)}
+.reh-dot{width:7px;height:7px;border-radius:50%;background:#a78bfa;flex-shrink:0}
 .reh-name{font-size:12.5px;font-weight:600;color:#e2e8f0;flex:1}
-.reh-detail-btn{font-size:10.5px;color:#475569;padding:2px 7px;background:rgba(255,255,255,.06);border-radius:4px;cursor:pointer}
-.reh-detail-btn:hover{background:rgba(255,255,255,.12);color:#94a3b8}
-
-/* Common times panel */
-.common-panel{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.3);border-radius:10px;padding:11px 12px}
-.common-panel-title{font-size:11px;font-weight:700;color:#34d399;margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.common-slot-row{font-size:12px;color:#6ee7b7;line-height:1.7;padding-left:2px}
-.common-slot-row b{color:#a7f3d0;font-weight:600}
+.reh-dbtn{font-size:10.5px;color:#475569;padding:2px 6px;background:rgba(255,255,255,.06);border-radius:4px;cursor:pointer;border:none;white-space:nowrap}
+.reh-dbtn:hover{background:rgba(255,255,255,.12);color:#94a3b8}
+/* Common times */
+.common-panel{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.28);border-radius:9px;padding:10px 12px}
+.common-panel-hd{font-size:11px;font-weight:700;color:#34d399;margin-bottom:7px}
+.common-row{font-size:12.5px;color:#6ee7b7;line-height:1.75}
+.common-row b{color:#a7f3d0;font-weight:600}
 .common-none{font-size:11.5px;color:#374151;font-style:italic}
-
+.common-sub{font-size:10.5px;color:#065f46;margin-bottom:5px}
 /* Member input */
 .lbl{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#475569;margin-bottom:4px}
 .ni{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:white;border-radius:8px;padding:8px 10px;font-size:13px;font-weight:500;outline:none}
@@ -95,15 +82,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .pvdel{font-size:10px;color:#f87171;opacity:0;transition:.1s;font-weight:600}
 .ttabs{display:flex;gap:3px;margin-bottom:11px}
 .ttab{flex:1;height:32px;border-radius:8px;border:2px solid;cursor:pointer;font-size:11px;font-weight:700;background:transparent;transition:.12s;display:flex;align-items:center;justify-content:center}
-
-/* Team status */
-#tstat{padding:10px 14px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0}
-.tslbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#374151;margin-bottom:6px}
+#tstat{padding:9px 14px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.tslbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#374151;margin-bottom:5px}
 .tsi{display:flex;align-items:center;gap:6px;margin-bottom:4px}
 .tsdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .sync-bar{padding:5px 14px 7px;font-size:11px;text-align:center;flex-shrink:0}
 .sync-ok{color:#4ade80}.sync-err{color:#f87171}.sync-ing{color:#94a3b8}
-
 /* CALENDAR */
 #mn{flex:1;background:#f2f1ec;display:flex;flex-direction:column;overflow:hidden}
 .wnav{padding:10px 16px;display:flex;align-items:center;gap:8px;background:white;border-bottom:1px solid rgba(0,0,0,.07);flex-shrink:0}
@@ -121,75 +105,78 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .wgh-ctag:hover{background:#ea6c00}
 .tl{font-size:9px;color:#cbd5e1;font-family:ui-monospace,monospace;text-align:right;padding:0 4px 0 0;height:12px;display:flex;align-items:center;justify-content:flex-end}
 .tl.hr{color:#94a3b8;font-weight:600}
-.slot{height:12px;border-bottom:1px solid rgba(0,0,0,.03);border-right:1px solid rgba(0,0,0,.04);position:relative;overflow:hidden}
+.slot{height:12px;border-bottom:1px solid rgba(0,0,0,.03);border-right:1px solid rgba(0,0,0,.04);position:relative;overflow:visible;cursor:pointer}
+.slot:hover{filter:brightness(.93)}
 .slot.hr-top{border-top:1px solid rgba(0,0,0,.08)}
-/* Member availability bars */
-.sbar{position:absolute;top:0;bottom:0;opacity:.75;border-radius:1px}
-/* All-free highlight: bright green with border */
-.slot.all-free{background:#bbf7d0!important;z-index:1}
+.avail-bar{position:absolute;top:0;bottom:0;opacity:.72;border-radius:1px}
+/* Common available = bright green */
+.slot.all-avail{background:#bbf7d0!important}
+.slot.all-avail-start{border-top:2px solid #059669!important}
+/* Fixed event block */
+.slot.has-event{background:#ddd6fe!important}
+.slot.event-start{border-top:2px solid #7c3aed!important;border-radius:2px 2px 0 0}
+.slot.event-end{border-bottom:2px solid #7c3aed!important;border-radius:0 0 2px 2px}
+.event-lbl{position:absolute;top:0;left:2px;font-size:8px;font-weight:700;color:#4c1d95;white-space:nowrap;line-height:12px;pointer-events:none;z-index:2}
 /* Concert column */
 .slot.c-col{border-left:2px solid rgba(249,115,22,.5)!important;border-right:2px solid rgba(249,115,22,.5)!important}
 .slot.c-top{border-top:2px solid rgba(249,115,22,.5)!important;border-radius:6px 6px 0 0}
 .slot.c-bot{border-bottom:2px solid rgba(249,115,22,.5)!important;border-radius:0 0 6px 6px}
-/* Timetable event blocks */
 .slot.tt-arrive{background:rgba(234,179,8,.3)}
 .slot.tt-setchange{background:rgba(59,130,246,.25)}
 .slot.tt-perform{background:rgba(239,68,68,.32)}
 .slot.tt-other{background:rgba(249,115,22,.22)}
 .tt-lbl{position:absolute;top:0;left:3px;font-size:8px;font-weight:700;white-space:nowrap;line-height:12px;pointer-events:none}
-/* "전원 가능" start marker */
-.all-free-start::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#059669;border-radius:1px}
-
 .lgnd{display:flex;flex-wrap:wrap;gap:8px;padding:6px 14px 8px;border-top:1px solid rgba(0,0,0,.06);background:white;flex-shrink:0;align-items:center}
 .lgi{display:flex;align-items:center;gap:4px;font-size:11px;color:#64748b}
 .lgdot{width:7px;height:7px;border-radius:50%}
-.lgfree{width:10px;height:10px;border-radius:2px;background:#bbf7d0;border:1.5px solid #059669}
+.lgavail{width:10px;height:10px;border-radius:2px;background:#bbf7d0;border:1.5px solid #059669}
 .lgconcert{width:10px;height:10px;border-radius:3px;border:2px solid #f97316}
-
+.lgevent{width:10px;height:10px;border-radius:2px;background:#ddd6fe;border:1.5px solid #7c3aed}
 /* MODALS */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
-.modal-box{background:white;border-radius:16px;width:100%;max-width:500px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
-.modal-hd{padding:15px 18px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.modal-box{background:white;border-radius:16px;width:100%;max-width:480px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-hd{padding:14px 18px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:8px;flex-shrink:0}
 .modal-hd h3{font-size:15px;font-weight:600;color:#111;flex:1}
 .modal-close{width:28px;height:28px;border:none;background:#f1f5f9;border-radius:7px;cursor:pointer;font-size:18px;color:#64748b;line-height:1;padding:0}
-.modal-body{overflow-y:auto;flex:1;padding:16px 18px}
-.modal-ta{width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.65;resize:none;outline:none;min-height:160px;font-family:inherit;color:#374151}
+.modal-body{overflow-y:auto;flex:1;padding:15px 18px}
+.modal-ta{width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.65;resize:none;outline:none;min-height:150px;font-family:inherit;color:#374151}
 .modal-ta:focus{border-color:#f97316}
-.modal-input{width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;font-size:13px;outline:none;font-family:inherit;color:#374151;margin-bottom:10px}
-.modal-input:focus{border-color:#7c3aed}
-.modal-btn{width:100%;border:none;border-radius:8px;color:white;font-size:13px;font-weight:600;padding:10px;cursor:pointer;margin-top:10px}
+.modal-inp{width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:13px;outline:none;font-family:inherit;color:#374151;margin-bottom:10px}
+.modal-inp:focus{border-color:#7c3aed}
+.modal-row{display:flex;gap:8px;margin-bottom:10px}
+.modal-sel{flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:9px 10px;font-size:13px;outline:none;color:#374151;background:white}
+.modal-sel:focus{border-color:#7c3aed}
+.modal-btn{width:100%;border:none;border-radius:8px;color:white;font-size:13px;font-weight:600;padding:10px;cursor:pointer;margin-top:8px}
 .mbtn-orange{background:#f97316}.mbtn-orange:hover{background:#ea6c00}
 .mbtn-purple{background:#7c3aed}.mbtn-purple:hover{background:#6d28d9}
 .mbtn-green{background:#059669}.mbtn-green:hover{background:#047857}
-.cpv{background:#f8fafc;border-radius:10px;padding:14px;margin-top:12px}
-.cpv h4{font-size:13px;font-weight:600;color:#111;margin-bottom:10px}
-.cpv-row{display:flex;gap:8px;margin-bottom:7px;font-size:12.5px;align-items:flex-start}
+.mbtn-red{background:#dc2626;margin-top:6px}.mbtn-red:hover{background:#b91c1c}
+.cpv{background:#f8fafc;border-radius:10px;padding:13px;margin-top:12px}
+.cpv h4{font-size:13px;font-weight:600;color:#111;margin-bottom:9px}
+.cpv-row{display:flex;gap:8px;margin-bottom:6px;font-size:12.5px;align-items:flex-start}
 .cpv-lbl{color:#94a3b8;min-width:52px;flex-shrink:0;padding-top:1px}
 .cpv-val{color:#374151;line-height:1.5}
-.cpv-tt{display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:12px}
-.cpv-tt-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.cpv-tt-time{font-family:ui-monospace,monospace;color:#64748b;min-width:90px}
+.cpv-tt{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:12px}
+.cpv-tt-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cpv-tt-time{font-family:ui-monospace,monospace;color:#64748b;min-width:88px}
 .cd-tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:12px}
-.cd-section{margin-bottom:16px}
-.cd-section h4{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;margin-bottom:8px;font-weight:600}
-.cd-tt-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f8fafc;font-size:13px}
-.cd-tt-time{font-family:ui-monospace,monospace;color:#64748b;min-width:100px}
-.cd-tt-bar{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cd-section{margin-bottom:14px}
+.cd-section h4{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;margin-bottom:7px;font-weight:600}
+.cd-tt-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:13px}
+.cd-tt-time{font-family:ui-monospace,monospace;color:#64748b;min-width:96px}
+.cd-tt-bar{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .cd-sl-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid #f8fafc}
-.cd-sl-num{color:#94a3b8;min-width:26px;font-size:12px}
+.cd-sl-num{color:#94a3b8;min-width:24px;font-size:12px}
 .cd-sl-song{color:#374151;font-size:13px}
-.cd-sl-ann{color:#94a3b8;font-size:12px;font-style:italic;padding:4px 0 4px 26px}
-.del-btn{display:flex;align-items:center;gap:5px;margin-top:14px;background:none;border:1px solid #fee2e2;color:#ef4444;border-radius:8px;font-size:12px;padding:8px 14px;cursor:pointer}
+.cd-sl-ann{color:#94a3b8;font-size:12px;font-style:italic;padding:4px 0 4px 24px}
+.del-btn{display:flex;align-items:center;gap:5px;margin-top:14px;background:none;border:1px solid #fee2e2;color:#ef4444;border-radius:8px;font-size:12px;padding:8px 14px;cursor:pointer;width:100%}
 .del-btn:hover{background:#fef2f2}
-
-/* No-selection placeholder */
-.no-sel{text-align:center;padding:24px 14px;color:#374151;font-size:12.5px;line-height:1.8}
-.no-sel-icon{font-size:26px;margin-bottom:7px}
+.no-sel{text-align:center;padding:22px 14px;color:#374151;font-size:12.5px;line-height:1.8}
+.no-sel-icon{font-size:24px;margin-bottom:6px}
 </style>
 </head>
 <body>
-
 <div id="setup-screen">
   <div class="setup-box">
     <h2>⚙️ 초기 설정</h2>
@@ -200,10 +187,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
     <input id="cfg-bin" class="setup-input" placeholder="6612f3abc...">
     <button class="setup-btn" onclick="saveConfig()">저장하고 시작</button>
     <div id="setup-err" class="setup-err">키 또는 Bin ID가 올바르지 않아요.</div>
-    <div class="setup-note">1. <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> 무료 계정 생성<br>2. API Keys → Master Key 복사<br>3. New Bin → <code>{"tm":[]}</code> 저장 → Bin ID 복사</div>
+    <div class="setup-note">1. <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> 무료 계정 생성<br>2. API Keys → Master Key 복사<br>3. New Bin → <code>{"tm":[]}</code> → Bin ID 복사</div>
   </div>
 </div>
-
 <div id="app">
   <div id="wrap">
     <div id="sb">
@@ -223,49 +209,66 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
     </div>
   </div>
 </div>
-
-<!-- Concert Add Modal -->
+<!-- Concert Add -->
 <div id="concert-modal" class="modal-bg" onclick="closeModal('concert-modal')">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-hd"><h3>🎤 공연 일정 추가</h3><button class="modal-close" onclick="closeModal('concert-modal')">×</button></div>
     <div class="modal-body">
       <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;line-height:1.6">공연 정보를 붙여넣기 해주세요. 캘린더에 표시만 됩니다.</div>
-      <textarea id="concert-ta" class="modal-ta" placeholder="** 더글로우 페스티벌&#10;1. 일시&#10; - 3/21(토)&#10;2. 장소 : 일산 킨텍스&#10;3. 타임테이블&#10; - 15:30 ㅣ 공연장 도착&#10; - 18:50-19:50 ㅣ 공연&#10;4. 셋리스트&#10; 1) 노래 제목"></textarea>
+      <textarea id="concert-ta" class="modal-ta" placeholder="** 더글로우 페스티벌&#10;1. 일시 - 3/21(토)&#10;2. 장소 : 일산 킨텍스&#10;3. 타임테이블&#10; - 15:30 ㅣ 공연장 도착&#10; - 18:50-19:50 ㅣ 공연&#10;4. 셋리스트&#10; 1) 노래 제목"></textarea>
       <button class="modal-btn mbtn-orange" onclick="parseConcert()">파싱하기</button>
       <div id="concert-preview" style="display:none"></div>
     </div>
   </div>
 </div>
-
-<!-- Rehearsal Add Modal -->
+<!-- Rehearsal Add -->
 <div id="rehearsal-modal" class="modal-bg" onclick="closeModal('rehearsal-modal')">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-hd"><h3>🎸 합주 일정 추가</h3><button class="modal-close" onclick="closeModal('rehearsal-modal')">×</button></div>
     <div class="modal-body">
-      <div style="font-size:12px;color:#94a3b8;margin-bottom:12px;line-height:1.6">어떤 공연을 위한 합주인지 제목을 입력하세요.<br>팀원들이 이 합주에 대해 가능한 시간을 입력하게 됩니다.</div>
+      <div style="font-size:12px;color:#94a3b8;margin-bottom:12px;line-height:1.6">어떤 공연을 위한 합주인지 제목을 입력하세요.</div>
       <label class="lbl" style="color:#94a3b8;margin-bottom:6px">합주 제목</label>
-      <input id="rehearsal-title-input" class="modal-input" placeholder="예) 5월 투어 합주, 더글로우 페스티벌 합주">
+      <input id="rehearsal-title-input" class="modal-inp" placeholder="예) 5월 투어 합주, 더글로우 페스티벌 합주">
       <button class="modal-btn mbtn-purple" onclick="saveRehearsal()">합주 일정 만들기</button>
     </div>
   </div>
 </div>
-
-<!-- Concert Detail Modal -->
+<!-- Concert Detail -->
 <div id="detail-modal" class="modal-bg" onclick="closeModal('detail-modal')">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-hd"><h3 id="detail-title">공연 상세</h3><button class="modal-close" onclick="closeModal('detail-modal')">×</button></div>
     <div class="modal-body" id="detail-body"></div>
   </div>
 </div>
-
-<!-- Rehearsal Detail Modal -->
+<!-- Rehearsal Detail -->
 <div id="reh-detail-modal" class="modal-bg" onclick="closeModal('reh-detail-modal')">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-hd"><h3 id="reh-detail-title">합주 상세</h3><button class="modal-close" onclick="closeModal('reh-detail-modal')">×</button></div>
     <div class="modal-body" id="reh-detail-body"></div>
   </div>
 </div>
-
+<!-- Fixed Event Create/Edit -->
+<div id="event-modal" class="modal-bg" onclick="closeModal('event-modal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hd"><h3 id="event-modal-title">일정 만들기</h3><button class="modal-close" onclick="closeModal('event-modal')">×</button></div>
+    <div class="modal-body">
+      <label class="lbl" style="color:#374151;margin-bottom:6px">제목</label>
+      <input id="ev-title" class="modal-inp" placeholder="예) 더글로우 합주">
+      <label class="lbl" style="color:#374151;margin-bottom:6px">날짜</label>
+      <input id="ev-date" class="modal-inp" type="date">
+      <label class="lbl" style="color:#374151;margin-bottom:6px">시간</label>
+      <div class="modal-row">
+        <select id="ev-sh" class="modal-sel"></select>
+        <select id="ev-sm" class="modal-sel"></select>
+        <span style="align-self:center;color:#94a3b8;font-size:13px;flex-shrink:0">~</span>
+        <select id="ev-eh" class="modal-sel"></select>
+        <select id="ev-em" class="modal-sel"></select>
+      </div>
+      <button class="modal-btn mbtn-purple" id="ev-save-btn" onclick="saveFixedEvent()">저장</button>
+      <button class="modal-btn mbtn-red" id="ev-del-btn" onclick="deleteFixedEvent()" style="display:none">삭제</button>
+    </div>
+  </div>
+</div>
 <script>
 const CLR=[{bg:'#7c3aed',lt:'#ede9fe',tx:'#4c1d95'},{bg:'#0ea5e9',lt:'#e0f2fe',tx:'#0c4a6e'},{bg:'#f97316',lt:'#fff7ed',tx:'#7c2d12'},{bg:'#10b981',lt:'#d1fae5',tx:'#064e3b'},{bg:'#e11d48',lt:'#ffe4e6',tx:'#881337'}];
 const NAMES=['광빈','찬호','기훈','석호','민석'];
@@ -273,33 +276,33 @@ const KWD={'월':1,'화':2,'수':3,'목':4,'금':5,'토':6,'일':0,'mon':1,'tue'
 const ENMO={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12,january:1,february:2,march:3,april:4,june:6,july:7,august:8,september:9,october:10,november:11,december:12};
 const KD=['일','월','화','수','목','금','토'];
 const now=new Date();
+const SLOTS=[];
+for(let h=8;h<24;h++)for(let m=0;m<60;m+=10)SLOTS.push(pad2(h)+':'+pad2(m));
 
-function ttColor(label){
-  if(/공연(?!장)/.test(label))return{cls:'tt-perform',dot:'#ef4444',text:'#b91c1c'};
-  if(/셋체인지|사운드|리허설/.test(label))return{cls:'tt-setchange',dot:'#3b82f6',text:'#1d4ed8'};
-  if(/도착|이동|출발/.test(label))return{cls:'tt-arrive',dot:'#eab308',text:'#92400e'};
+function ttColor(l){
+  if(/공연(?!장)/.test(l))return{cls:'tt-perform',dot:'#ef4444',text:'#b91c1c'};
+  if(/셋체인지|사운드|리허설/.test(l))return{cls:'tt-setchange',dot:'#3b82f6',text:'#1d4ed8'};
+  if(/도착|이동|출발/.test(l))return{cls:'tt-arrive',dot:'#eab308',text:'#92400e'};
   return{cls:'tt-other',dot:'#f97316',text:'#c2410c'};
 }
-function pad(n){return String(n).padStart(2,'0');}
-function toMin(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
-function normDate(d){if(!d)return'';const p=String(d).trim().split(/[-\/]/);if(p.length!==3)return d;return`${p[0]}-${pad(parseInt(p[1]))}-${pad(parseInt(p[2]))}`;}
-function dateStr(date){return`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;}
-function hhmm(h,m=0){return`${pad(Math.min(23,h))}:${pad(m)}`;}
+function pad2(n){return String(n).padStart(2,'0');}
+function toMin(t){if(!t)return 0;const[h,m]=t.split(':').map(Number);return h*60+m;}
+function normDate(d){if(!d)return'';const p=String(d).trim().split(/[-\/]/);if(p.length!==3)return d;return`${p[0]}-${pad2(parseInt(p[1]))}-${pad2(parseInt(p[2]))}`;}
+function dateStr(dt){return`${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;}
+function hhmm(h,m=0){return`${pad2(Math.min(23,h))}:${pad2(m)}`;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function slotsKey(s){return`${s.date}|${s.startTime}|${s.endTime}`;}
-function isBz(slots,date,slotTime){const sm=toMin(slotTime);return slots.some(s=>normDate(s.date)===date&&toMin(s.startTime)<=sm&&sm<toMin(s.endTime));}
-function ttEventAt(concert,sl){const sm=toMin(sl);return concert.timetable.find(e=>{const st=toMin(e.time),en=e.endTime?toMin(e.endTime):st+10;return st<=sm&&sm<en;})||null;}
+// isAvail: slot is within member's available range
+function isAvail(slots,date,sl){const sm=toMin(sl);return slots.some(s=>normDate(s.date)===date&&toMin(s.startTime)<=sm&&sm<toMin(s.endTime));}
+function ttEvAt(concert,sl){const sm=toMin(sl);return concert.timetable.find(e=>{const st=toMin(e.time),en=e.endTime?toMin(e.endTime):st+10;return st<=sm&&sm<en;})||null;}
 function rId(r){return r.id||r.title;}
 function formatDate(d){if(!d)return'';const p=d.split('-');return p.length===3?`${parseInt(p[1])}/${parseInt(p[2])}`:''; }
 function formatDateKo(d){if(!d)return'';const p=d.split('-');return p.length===3?`${parseInt(p[1])}월 ${parseInt(p[2])}일`:''; }
-
-// 10-min slots 08:00–23:50
-const SLOTS=[];
-for(let h=8;h<24;h++)for(let m=0;m<60;m+=10)SLOTS.push(pad(h)+':'+pad(m));
+function toKoTime(t){if(!t)return'';const[h,m]=t.split(':').map(Number);const ap=h>=12?'오후':'오전';const hh=h>12?h-12:h===0?12:h;return ap+' '+hh+'시'+(m?' '+m+'분':'');}
 
 // ── PARSERS ──
-function detectAmpm(str){if(/오후|pm/i.test(str))return'pm';if(/오전|am/i.test(str))return'am';if(/저녁|evening/i.test(str))return'evening';if(/아침|morning/i.test(str))return'morning';return null;}
-function applyAmpm(h,m,ampm){if(ampm==='pm'&&h<12)h+=12;if(ampm==='am'&&h===12)h=0;if(ampm==='evening'&&h<12)h+=12;return{h,m};}
+function detectAmpm(s){if(/오후|pm/i.test(s))return'pm';if(/오전|am/i.test(s))return'am';if(/저녁|evening/i.test(s))return'evening';if(/아침|morning/i.test(s))return'morning';return null;}
+function applyAmpm(h,m,ap){if(ap==='pm'&&h<12)h+=12;if(ap==='am'&&h===12)h=0;if(ap==='evening'&&h<12)h+=12;return{h,m};}
 function parseTime(str){
   str=str.trim();
   if(/종일|하루종일|all\s*day/i.test(str))return{start:'08:00',end:'24:00'};
@@ -307,34 +310,34 @@ function parseTime(str){
   if(/아침/.test(str)&&!/시/.test(str))return{start:'09:00',end:'12:00'};
   if(/(오후\s*중|오후\s*내내)/.test(str)&&!/시/.test(str))return{start:'13:00',end:'17:00'};
   if(/(오전\s*중|오전\s*내내)/.test(str)&&!/시/.test(str))return{start:'09:00',end:'12:00'};
-  const ampm=detectAmpm(str);
+  const ap=detectAmpm(str);
   const aK=str.match(/(\d{1,2})\s*시\s*(반|\d+분)?\s*(?:이후|부터~?|~\s*$)/);
-  if(aK){let h=parseInt(aK[1]),m=aK[2]==='반'?30:(aK[2]?parseInt(aK[2])||0:0);const r=applyAmpm(h,m,ampm);return{start:hhmm(r.h,r.m),end:'24:00'};}
+  if(aK){let h=parseInt(aK[1]),m=aK[2]==='반'?30:(aK[2]?parseInt(aK[2])||0:0);const r=applyAmpm(h,m,ap);return{start:hhmm(r.h,r.m),end:'24:00'};}
   const aE=str.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*(?:onwards|after|~\s*$)/i);
-  if(aE){let h=parseInt(aE[1]),m=parseInt(aE[2]||0),ap=(aE[3]||'').toLowerCase();if(ap==='pm'&&h<12)h+=12;if(ap==='am'&&h===12)h=0;return{start:hhmm(h,m),end:'24:00'};}
+  if(aE){let h=parseInt(aE[1]),m=parseInt(aE[2]||0),a2=(aE[3]||'').toLowerCase();if(a2==='pm'&&h<12)h+=12;if(a2==='am'&&h===12)h=0;return{start:hhmm(h,m),end:'24:00'};}
   let m=str.match(/(\d{1,2})\s*시\s*(반|\d+분)?\s*[-~]\s*(\d{1,2})\s*시?\s*(반|\d+분)?/);
-  if(m){let sh=parseInt(m[1]),sm2=m[2]==='반'?30:(m[2]?parseInt(m[2])||0:0),eh=parseInt(m[3]),em2=m[4]==='반'?30:(m[4]?parseInt(m[4])||0:0);const rs=applyAmpm(sh,sm2,ampm);let re=applyAmpm(eh,em2,ampm);if(re.h<=rs.h&&re.h<12&&ampm==='pm')re.h+=12;return{start:hhmm(rs.h,rs.m),end:hhmm(re.h,re.m)};}
+  if(m){let sh=parseInt(m[1]),sm=m[2]==='반'?30:(m[2]?parseInt(m[2])||0:0),eh=parseInt(m[3]),em=m[4]==='반'?30:(m[4]?parseInt(m[4])||0:0);const rs=applyAmpm(sh,sm,ap);let re=applyAmpm(eh,em,ap);if(re.h<=rs.h&&re.h<12&&ap==='pm')re.h+=12;return{start:hhmm(rs.h,rs.m),end:hhmm(re.h,re.m)};}
   m=str.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-~]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
   if(m){let sh=parseInt(m[1]),sm2=parseInt(m[2]||0),sap=(m[3]||'').toLowerCase(),eh=parseInt(m[4]),em2=parseInt(m[5]||0),eap=(m[6]||'').toLowerCase();if(sap==='pm'&&sh<12)sh+=12;if(sap==='am'&&sh===12)sh=0;if(eap==='pm'&&eh<12)eh+=12;if(eap==='am'&&eh===12)eh=0;if(!eap&&!sap&&eh<sh)eh+=12;return{start:hhmm(sh,sm2),end:hhmm(eh,em2)};}
   m=str.match(/(\d{1,2})\s*시\s*(반|\d+분)?/);
-  if(m){let h=parseInt(m[1]),mn=m[2]==='반'?30:(m[2]?parseInt(m[2])||0:0);const r=applyAmpm(h,mn,ampm);return{start:hhmm(r.h,r.m),end:hhmm(r.h+1,r.m)};}
+  if(m){let h=parseInt(m[1]),mn=m[2]==='반'?30:(m[2]?parseInt(m[2])||0:0);const r=applyAmpm(h,mn,ap);return{start:hhmm(r.h,r.m),end:hhmm(r.h+1,r.m)};}
   m=str.match(/(\d{1,2}):(\d{2})/);
   if(m){const h=parseInt(m[1]),mn=parseInt(m[2]);return{start:hhmm(h,mn),end:hhmm(h+1,mn)};}
   return null;
 }
-function datesForWeekday(wdIdx,yr,mo){const dim=new Date(yr,mo+1,0).getDate(),dates=[];for(let d=1;d<=dim;d++)if(new Date(yr,mo,d).getDay()===wdIdx)dates.push(d);return dates;}
+function datesForWD(wdi,yr,mo){const dim=new Date(yr,mo+1,0).getDate(),d=[];for(let i=1;i<=dim;i++)if(new Date(yr,mo,i).getDay()===wdi)d.push(i);return d;}
 function parseSchedule(text,yr,mo){
   const slots=[],dim=new Date(yr,mo+1,0).getDate();
   const lines=text.split(/\n|,(?=\s*(?:\d|오|매|every|mon|tue|wed|thu|fri|sat|sun))/i).map(l=>l.trim()).filter(Boolean);
-  const ds=(d)=>`${yr}-${pad(mo+1)}-${pad(d)}`;
+  const ds=d=>`${yr}-${pad2(mo+1)}-${pad2(d)}`;
   for(const line of lines){
     const lo=line.toLowerCase(),t=parseTime(line);
     const rK=line.match(/매\s*주?\s*([월화수목금토일](?:\s*[,·\/]\s*[월화수목금토일])*)/);
-    if(rK){const days=rK[1].match(/[월화수목금토일]/g)||[];for(const d of days){const wi=KWD[d];if(wi===undefined)continue;for(const day of datesForWeekday(wi,yr,mo)){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(day),startTime:tt.start,endTime:tt.end});}}continue;}
+    if(rK){const days=rK[1].match(/[월화수목금토일]/g)||[];for(const d of days){const wi=KWD[d];if(wi===undefined)continue;for(const day of datesForWD(wi,yr,mo)){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(day),startTime:tt.start,endTime:tt.end});}}continue;}
     const rE=lo.match(/every\s+((?:(?:mon|tue|wed|thu|fri|sat|sun)(?:day)?(?:\s*[,&\/]\s*)?)+)/i);
-    if(rE){const dt=(rE[1].match(/\b(?:mon|tue|wed|thu|fri|sat|sun)(?:day)?\b/gi)||[]);for(const tok of dt){const wi=KWD[tok.toLowerCase().slice(0,3)];if(wi===undefined)continue;for(const day of datesForWeekday(wi,yr,mo)){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(day),startTime:tt.start,endTime:tt.end});}}continue;}
+    if(rE){const dt=(rE[1].match(/\b(?:mon|tue|wed|thu|fri|sat|sun)(?:day)?\b/gi)||[]);for(const tok of dt){const wi=KWD[tok.toLowerCase().slice(0,3)];if(wi===undefined)continue;for(const day of datesForWD(wi,yr,mo)){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(day),startTime:tt.start,endTime:tt.end});}}continue;}
     const nsd=!/\d+\s*[월일]/.test(line)&&!/\b\d{1,2}[-\/]\d{1,2}\b/.test(line)&&!/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(line);
-    if(nsd){const wm=line.match(/[월화수목금토일]요일?|(?:mon|tue|wed|thu|fri|sat|sun)(?:day)?/gi);if(wm&&wm.length){let f=false;for(const tok of wm){const key=tok.replace(/요일/,'').trim();const wi=KWD[key]??KWD[key.toLowerCase().slice(0,3)]??KWD[key.toLowerCase()];if(wi!==undefined){for(const day of datesForWeekday(wi,yr,mo)){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(day),startTime:tt.start,endTime:tt.end});}f=true;}}if(f)continue;}}
+    if(nsd){const wm=line.match(/[월화수목금토일]요일?|(?:mon|tue|wed|thu|fri|sat|sun)(?:day)?/gi);if(wm&&wm.length){let f=false;for(const tok of wm){const key=tok.replace(/요일/,'').trim();const wi=KWD[key]??KWD[key.toLowerCase().slice(0,3)]??KWD[key.toLowerCase()];if(wi!==undefined){for(const day of datesForWD(wi,yr,mo)){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(day),startTime:tt.start,endTime:tt.end});}f=true;}}if(f)continue;}}
     const kd=line.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
     if(kd){const m2=parseInt(kd[1])-1,d=parseInt(kd[2]);if(m2===mo&&d>=1&&d<=dim){const tt=t||{start:'09:00',end:'18:00'};slots.push({date:ds(d),startTime:tt.start,endTime:tt.end});}continue;}
     const e1=lo.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\s+(\d{1,2})\b/),e2=lo.match(/\b(\d{1,2})\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*/);
@@ -348,7 +351,7 @@ function parseSchedule(text,yr,mo){
 function parseConcertText(raw){
   const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean);
   let name='',date='',venue='',timetable=[],setlist=[],section='',songNum=0;
-  function tryDate(line){const m=line.match(/(\d{1,2})[\/월]\s*(\d{1,2})/);if(m&&!date)date=`${now.getFullYear()}-${pad(parseInt(m[1]))}-${pad(parseInt(m[2]))}`;}
+  const tryDate=line=>{const m=line.match(/(\d{1,2})[\/월]\s*(\d{1,2})/);if(m&&!date)date=`${now.getFullYear()}-${pad2(parseInt(m[1]))}-${pad2(parseInt(m[2]))}`; };
   for(const line of lines){
     if(/^[\*★◆]+\s*\S/.test(line)){name=line.replace(/^[\*★◆\s]+/,'').trim();continue;}
     if(/^\d+\.\s*(?:일시|일자|날짜|date)\s*[:：]?/i.test(line)){section='date';tryDate(line);continue;}
@@ -368,8 +371,8 @@ function parseConcertText(raw){
       if(m&&!/순서|번째|팀/.test(m[1])){timetable.push({time:m[2],endTime:m[3],label:m[1].trim()});continue;}
     }
     if(section==='setlist'){
-      const numbered=line.match(/^(\d+)[)\.]\s*(.+)/);
-      if(numbered){songNum++;setlist.push({type:'song',num:songNum,title:numbered[2].trim()});}
+      const num=line.match(/^(\d+)[)\.]\s*(.+)/);
+      if(num){songNum++;setlist.push({type:'song',num:songNum,title:num[2].trim()});}
       else if(!/^\d+\./.test(line)){const clean=line.replace(/^[-\s]+/,'').trim();if(clean)setlist.push({type:'annotation',text:clean});}
     }
   }
@@ -377,51 +380,35 @@ function parseConcertText(raw){
   return{name,date,venue,timetable,setlist};
 }
 
-// ── COMMON TIME CALCULATION ──
-// Returns array of {date, startTime, endTime} ranges where ALL submitted members are free
-function calcCommonTimes(rehearsalId){
-  const submitters=G.tm.map((_,i)=>i).filter(i=>getSlots(i,rehearsalId).length>0);
-  if(submitters.length<1)return[];
-  const result=[];
-  // Group slots by date
+// ── COMMON TIME CALC ──
+// Available = member HAS marked slot as available (isAvail === true)
+// Common = ALL submitters are available at that slot
+function calcCommonTimes(rid){
+  const subs=G.tm.map((_,i)=>i).filter(i=>getSlots(i,rid).length>0);
+  if(!subs.length)return[];
   const allDates=new Set();
-  submitters.forEach(i=>getSlots(i,rehearsalId).forEach(s=>allDates.add(normDate(s.date))));
+  subs.forEach(i=>getSlots(i,rid).forEach(s=>allDates.add(normDate(s.date))));
+  const result=[];
   for(const date of [...allDates].sort()){
-    let rangeStart=null,rangeEnd=null;
+    let rs=null,re=null;
     for(const sl of SLOTS){
-      const free=submitters.every(i=>!isBz(getSlots(i,rehearsalId),date,sl));
-      if(free){
-        if(!rangeStart)rangeStart=sl;
-        rangeEnd=sl;
-      }else{
-        if(rangeStart){result.push({date,startTime:rangeStart,endTime:rangeEnd});rangeStart=null;rangeEnd=null;}
-      }
+      // ALL submitters must have this slot as available
+      const allOk=subs.every(i=>isAvail(getSlots(i,rid),date,sl));
+      if(allOk){if(!rs)rs=sl;re=sl;}
+      else{if(rs){result.push({date,startTime:rs,endTime:re});rs=null;re=null;}}
     }
-    if(rangeStart)result.push({date,startTime:rangeStart,endTime:rangeEnd});
+    if(rs)result.push({date,startTime:rs,endTime:re});
   }
   return result;
 }
-
-// Format common times as readable Korean text
-function formatCommonTimes(ranges){
+function fmtCommonTimes(ranges){
   if(!ranges.length)return null;
-  // Group by date
-  const byDate={};
-  ranges.forEach(r=>{if(!byDate[r.date])byDate[r.date]=[];byDate[r.date].push(r);});
+  const byDate={};ranges.forEach(r=>{if(!byDate[r.date])byDate[r.date]=[];byDate[r.date].push(r);});
   return Object.keys(byDate).sort().map(d=>{
     const rs=byDate[d];
-    const timeStr=rs.map(r=>{
-      const s=toMin24ko(r.startTime),e=toMin24ko(r.endTime);
-      return`${s} ~ ${e}`;
-    }).join(', ');
+    const timeStr=rs.map(r=>`${toKoTime(r.startTime)} ~ ${toKoTime(r.endTime)}`).join(', ');
     return{date:d,text:`${formatDateKo(d)}: ${timeStr}`};
   });
-}
-function toMin24ko(t){
-  const[h,m]=t.split(':').map(Number);
-  const ap=h>=12?'오후':'오전';
-  const hh=h>12?h-12:h===0?12:h;
-  return`${ap} ${hh}시${m?` ${m}분`:''}`;
 }
 
 // ── CONFIG ──
@@ -433,45 +420,43 @@ function saveConfig(){
   CFG_KEY=k;CFG_BIN=b;document.getElementById('setup-err').style.display='none';bootApp();
 }
 function loadConfig(){
-  try{
-    CFG_KEY=JSONBIN_KEY||localStorage.getItem('tsc_key')||'';
-    CFG_BIN=BIN_ID||localStorage.getItem('tsc_bin')||'';
-  }catch(e){CFG_KEY=JSONBIN_KEY;CFG_BIN=BIN_ID;}
-  if(CFG_KEY&&CFG_BIN){
-    document.getElementById('setup-screen').style.display='none';
-    bootApp();
-  }else{
-    document.getElementById('setup-screen').style.display='flex';
-  }
+  try{CFG_KEY=JSONBIN_KEY||localStorage.getItem('tsc_key')||'';CFG_BIN=BIN_ID||localStorage.getItem('tsc_bin')||'';}
+  catch(e){CFG_KEY=JSONBIN_KEY;CFG_BIN=BIN_ID;}
+  if(CFG_KEY&&CFG_BIN){document.getElementById('setup-screen').style.display='none';bootApp();}
+  else document.getElementById('setup-screen').style.display='flex';
 }
-
-// ── JSONBIN ──
-async function fetchData(){const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG_BIN}/latest`,{headers:{'X-Master-Key':CFG_KEY,'X-Bin-Meta':'false'}});if(!r.ok)throw new Error(`${r.status}`);return await r.json();}
-async function pushData(data){const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG_BIN}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':CFG_KEY},body:JSON.stringify(data)});if(!r.ok)throw new Error(`${r.status}`);}
+async function fetchData(){const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG_BIN}/latest`,{headers:{'X-Master-Key':CFG_KEY,'X-Bin-Meta':'false'}});if(!r.ok)throw new Error(r.status);return r.json();}
+async function pushData(data){const r=await fetch(`https://api.jsonbin.io/v3/b/${CFG_BIN}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':CFG_KEY},body:JSON.stringify(data)});if(!r.ok)throw new Error(r.status);}
 function setSyncBar(msg,cls){const el=document.getElementById('sync-bar');el.className='sync-bar '+cls;el.textContent=msg;}
 
 // ── LOCAL STORAGE ──
-const LS_KEY='tsc_v3';
-function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals,ts:Date.now()}));}catch(e){}}
+const LS_KEY='tsc_v4';
+function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals,events:G.events,ts:Date.now()}));}catch(e){}}
 function loadLocal(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
-function mergeSlots(a,b){if(!a&&!b)return{};if(!a)return b;if(!b)return a;const result={...a};for(const cid of Object.keys(b)){if(!result[cid]){result[cid]=b[cid];}else{const keys=new Set(result[cid].map(slotsKey));result[cid]=[...result[cid],...b[cid].filter(s=>!keys.has(slotsKey(s)))];}}return result;}
+function mergeSlots(a,b){
+  if(!a&&!b)return{};if(!a)return b;if(!b)return a;
+  const res={...a};
+  for(const cid of Object.keys(b)){
+    if(!res[cid])res[cid]=b[cid];
+    else{const keys=new Set(res[cid].map(slotsKey));res[cid]=[...res[cid],...b[cid].filter(s=>!keys.has(slotsKey(s)))];}
+  }
+  return res;
+}
 function mergeData(remote,local){
   if(!local)return remote;if(!remote)return local;
-  const tm=NAMES.map((name,i)=>({name:remote.tm?.[i]?.name||local.tm?.[i]?.name||name,slots:mergeSlots(remote.tm?.[i]?.slots||{},local.tm?.[i]?.slots||{}),warn:''}));
-  const concerts=remote.concerts?.length?remote.concerts:(local.concerts||[]);
-  const rehearsals=remote.rehearsals?.length?remote.rehearsals:(local.rehearsals||[]);
-  return{tm,concerts,rehearsals};
+  const tm=NAMES.map((n,i)=>({name:remote.tm?.[i]?.name||local.tm?.[i]?.name||n,slots:mergeSlots(remote.tm?.[i]?.slots||{},local.tm?.[i]?.slots||{}),warn:''}));
+  return{tm,concerts:remote.concerts?.length?remote.concerts:(local.concerts||[]),rehearsals:remote.rehearsals?.length?remote.rehearsals:(local.rehearsals||[]),events:remote.events?.length?remote.events:(local.events||[])};
 }
 
 // ── STATE ──
 function getWeekStart(base){const d=new Date(base);const day=d.getDay();const diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);d.setHours(0,0,0,0);return d;}
 let weekStart=getWeekStart(now);
-let G={act:0,selRehearsal:null,tm:NAMES.map(n=>({name:n,slots:{},warn:''})),concerts:[],rehearsals:[]};
-let saveTimeout=null,pendingConcert=null;
+let G={act:0,selReh:null,showPastConcerts:false,tm:NAMES.map(n=>({name:n,slots:{},warn:''})),concerts:[],rehearsals:[],events:[]};
+let saveTimeout=null,pendingConcertParsed=null,editingEventId=null;
 
-function getSlots(tmIdx,rehId){return(G.tm[tmIdx].slots&&G.tm[tmIdx].slots[rehId])||[];}
-function setSlots(tmIdx,rehId,arr){if(!G.tm[tmIdx].slots)G.tm[tmIdx].slots={};G.tm[tmIdx].slots[rehId]=arr;}
-function hasSlots(tmIdx,rehId){return getSlots(tmIdx,rehId).length>0;}
+function getSlots(ti,rid){return(G.tm[ti].slots&&G.tm[ti].slots[rid])||[];}
+function setSlots(ti,rid,arr){if(!G.tm[ti].slots)G.tm[ti].slots={};G.tm[ti].slots[rid]=arr;}
+function hasSlots(ti,rid){return getSlots(ti,rid).length>0;}
 function getAllSlots(ti){if(!G.tm[ti].slots)return[];return Object.values(G.tm[ti].slots).flat();}
 
 async function bootApp(){
@@ -481,24 +466,24 @@ async function bootApp(){
   const local=loadLocal();
   if(local&&local.tm){
     G.tm=NAMES.map((n,i)=>({name:local.tm[i]?.name||n,slots:local.tm[i]?.slots||{},warn:''}));
-    G.concerts=local.concerts||[];G.rehearsals=local.rehearsals||[];
-    if(G.rehearsals.length>0&&!G.selRehearsal)G.selRehearsal=rId(G.rehearsals[0]);
+    G.concerts=local.concerts||[];G.rehearsals=local.rehearsals||[];G.events=local.events||[];
+    if(G.rehearsals.length&&!G.selReh)G.selReh=rId(G.rehearsals[0]);
     renderAll();
   }
   try{
     const remote=await fetchData();
     if(remote&&remote.tm){
       const merged=mergeData(remote,local);
-      G.tm=merged.tm;G.concerts=merged.concerts;G.rehearsals=merged.rehearsals||[];
-      if(G.rehearsals.length>0&&!G.selRehearsal)G.selRehearsal=rId(G.rehearsals[0]);
+      G.tm=merged.tm;G.concerts=merged.concerts;G.rehearsals=merged.rehearsals;G.events=merged.events||[];
+      if(G.rehearsals.length&&!G.selReh)G.selReh=rId(G.rehearsals[0]);
       const localHasMore=local&&NAMES.some((_,i)=>{const ls=local.tm?.[i]?.slots||{},rs=remote.tm?.[i]?.slots||{};return Object.keys(ls).some(cid=>(ls[cid]||[]).length>(rs[cid]||[]).length);});
-      if(localHasMore)await pushData({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals});
+      if(localHasMore)await pushData({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals,events:G.events});
       setSyncBar('✓ 동기화 완료','sync-ok');saveLocal();
     }
   }catch(e){setSyncBar('⚠ 오프라인 — 로컬 데이터','sync-err');}
   renderAll();
   setInterval(async()=>{
-    try{const remote=await fetchData();if(remote&&remote.tm){const cur={tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals};const merged=mergeData(remote,cur);G.tm=merged.tm;G.concerts=merged.concerts;G.rehearsals=merged.rehearsals||[];saveLocal();renderAll();setSyncBar('✓ 동기화 완료','sync-ok');}}catch(e){}
+    try{const remote=await fetchData();if(remote&&remote.tm){const cur={tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals,events:G.events};const merged=mergeData(remote,cur);G.tm=merged.tm;G.concerts=merged.concerts;G.rehearsals=merged.rehearsals;G.events=merged.events||[];saveLocal();renderAll();setSyncBar('✓ 동기화 완료','sync-ok');}}catch(e){}
   },30000);
 }
 async function debounceSave(){
@@ -506,7 +491,7 @@ async function debounceSave(){
   clearTimeout(saveTimeout);
   saveTimeout=setTimeout(async()=>{
     setSyncBar('저장 중…','sync-ing');
-    try{await pushData({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals});saveLocal();setSyncBar('✓ 저장 완료','sync-ok');}
+    try{await pushData({tm:G.tm.map(t=>({name:t.name,slots:t.slots})),concerts:G.concerts,rehearsals:G.rehearsals,events:G.events});saveLocal();setSyncBar('✓ 저장 완료','sync-ok');}
     catch(e){setSyncBar('⚠ 원격 저장 실패 (로컬 저장됨)','sync-err');}
   },800);
 }
@@ -515,26 +500,25 @@ async function debounceSave(){
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 // Concert
-let pendingConcertParsed=null;
 function parseConcert(){
   const text=document.getElementById('concert-ta').value.trim();if(!text)return;
   pendingConcertParsed=parseConcertText(text);
   const c=pendingConcertParsed;
   const ttRows=c.timetable.map(e=>{const col=ttColor(e.label);return`<div class="cpv-tt"><div class="cpv-tt-dot" style="background:${col.dot}"></div><span class="cpv-tt-time">${e.time}${e.endTime?'–'+e.endTime:''}</span><span>${esc(e.label)}</span></div>`;}).join('');
-  const songs=c.setlist.filter(s=>s.type==='song').length;
   const pv=document.getElementById('concert-preview');pv.style.display='block';
-  pv.innerHTML=`<div class="cpv"><h4>파싱 결과 확인</h4>
+  pv.innerHTML=`<div class="cpv"><h4>파싱 결과</h4>
     <div class="cpv-row"><span class="cpv-lbl">공연명</span><span class="cpv-val"><b>${esc(c.name)||'(미인식)'}</b></span></div>
     <div class="cpv-row"><span class="cpv-lbl">일시</span><span class="cpv-val">${c.date||'(미인식)'}</span></div>
     <div class="cpv-row"><span class="cpv-lbl">장소</span><span class="cpv-val">${esc(c.venue)||'(미인식)'}</span></div>
     <div class="cpv-row"><span class="cpv-lbl">타임</span><div class="cpv-val">${ttRows||'(미인식)'}</div></div>
-    <div class="cpv-row"><span class="cpv-lbl">셋리스트</span><span class="cpv-val">${songs}곡</span></div>
+    <div class="cpv-row"><span class="cpv-lbl">셋리스트</span><span class="cpv-val">${c.setlist.filter(s=>s.type==='song').length}곡</span></div>
   </div><button class="modal-btn mbtn-orange" onclick="saveConcert()">캘린더에 저장</button>`;
 }
 function saveConcert(){
   if(!pendingConcertParsed)return;
   G.concerts=G.concerts.filter(c=>c.date!==pendingConcertParsed.date);
   G.concerts.push(pendingConcertParsed);
+  G.concerts.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
   debounceSave();closeModal('concert-modal');
   if(pendingConcertParsed.date){const p=pendingConcertParsed.date.split('-').map(Number);weekStart=getWeekStart(new Date(p[0],p[1]-1,p[2]));}
   renderAll();
@@ -556,25 +540,22 @@ function deleteConcert(idx){G.concerts.splice(idx,1);debounceSave();closeModal('
 
 // Rehearsal
 function saveRehearsal(){
-  const title=document.getElementById('rehearsal-title-input').value.trim();
-  if(!title)return;
+  const title=document.getElementById('rehearsal-title-input').value.trim();if(!title)return;
   const id='reh_'+Date.now();
   G.rehearsals.push({id,title,createdAt:Date.now()});
-  G.selRehearsal=id;
-  debounceSave();closeModal('rehearsal-modal');renderAll();
+  G.selReh=id;debounceSave();closeModal('rehearsal-modal');renderAll();
 }
-function selectRehearsal(id){
-  G.selRehearsal=id;renderAll();
-}
+function selectReh(id){G.selReh=id;renderAll();}
 function openRehDetail(idx){
   const r=G.rehearsals[idx];if(!r)return;
+  const rid=rId(r);
   document.getElementById('reh-detail-title').textContent=r.title;
-  const submitters=G.tm.map((_,i)=>i).filter(i=>hasSlots(i,rId(r)));
-  const common=calcCommonTimes(rId(r));
-  const formatted=formatCommonTimes(common);
+  const subs=G.tm.map((_,i)=>i).filter(i=>hasSlots(i,rid));
+  const common=calcCommonTimes(rid);
+  const formatted=fmtCommonTimes(common);
   document.getElementById('reh-detail-body').innerHTML=`
     <div class="cd-section"><h4>제출 현황</h4>
-    ${G.tm.map((t,i)=>`<div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f8fafc"><div style="width:8px;height:8px;border-radius:50%;background:${submitters.includes(i)?CLR[i].bg:'#e2e8f0'}"></div><span style="font-size:13px;color:${submitters.includes(i)?'#111':'#94a3b8'}">${esc(t.name)}</span>${submitters.includes(i)?'<span style="color:#059669;font-size:11px;margin-left:auto">✓ 제출</span>':''}</div>`).join('')}
+    ${G.tm.map((t,i)=>`<div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f8fafc"><div style="width:8px;height:8px;border-radius:50%;background:${subs.includes(i)?CLR[i].bg:'#e2e8f0'}"></div><span style="font-size:13px;color:${subs.includes(i)?'#111':'#94a3b8'}">${esc(t.name)}</span>${subs.includes(i)?'<span style="color:#059669;font-size:11px;margin-left:auto">✓ 제출</span>':''}</div>`).join('')}
     </div>
     ${formatted?`<div class="cd-section"><h4>공통 가능 시간</h4>${formatted.map(f=>`<div style="font-size:12.5px;color:#374151;padding:5px 0;border-bottom:1px solid #f8fafc">${esc(f.text)}</div>`).join('')}</div>`:''}
     <button class="del-btn" onclick="deleteRehearsal(${idx})">🗑 합주 삭제</button>`;
@@ -583,54 +564,119 @@ function openRehDetail(idx){
 function deleteRehearsal(idx){
   const id=rId(G.rehearsals[idx]);G.rehearsals.splice(idx,1);
   G.tm.forEach(t=>{if(t.slots&&t.slots[id])delete t.slots[id];});
-  if(G.selRehearsal===id)G.selRehearsal=G.rehearsals.length>0?rId(G.rehearsals[0]):null;
+  if(G.selReh===id)G.selReh=G.rehearsals.length?rId(G.rehearsals[0]):null;
   debounceSave();closeModal('reh-detail-modal');renderAll();
+}
+
+// ── FIXED EVENTS ──
+function initTimePickers(){
+  const sh=document.getElementById('ev-sh'),sm=document.getElementById('ev-sm');
+  const eh=document.getElementById('ev-eh'),em=document.getElementById('ev-em');
+  [sh,eh].forEach(el=>{el.innerHTML='';for(let h=0;h<24;h++)el.innerHTML+=`<option value="${pad2(h)}">${h}시</option>`;});
+  [sm,em].forEach(el=>{el.innerHTML='';for(let m=0;m<60;m+=10)el.innerHTML+=`<option value="${pad2(m)}">${pad2(m)}분</option>`;});
+}
+function openEventModal(date,startSl,eventId){
+  initTimePickers();
+  editingEventId=eventId||null;
+  document.getElementById('event-modal-title').textContent=eventId?'일정 수정':'일정 만들기';
+  document.getElementById('ev-del-btn').style.display=eventId?'block':'none';
+  if(eventId){
+    const ev=G.events.find(e=>e.id===eventId);
+    if(ev){
+      document.getElementById('ev-title').value=ev.title;
+      document.getElementById('ev-date').value=ev.date;
+      document.getElementById('ev-sh').value=ev.startTime.split(':')[0];
+      document.getElementById('ev-sm').value=ev.startTime.split(':')[1];
+      document.getElementById('ev-eh').value=ev.endTime.split(':')[0];
+      document.getElementById('ev-em').value=ev.endTime.split(':')[1];
+    }
+  }else{
+    document.getElementById('ev-title').value='';
+    document.getElementById('ev-date').value=date||'';
+    document.getElementById('ev-sh').value=startSl?startSl.split(':')[0]:'09';
+    document.getElementById('ev-sm').value=startSl?startSl.split(':')[1]:'00';
+    const eh2=startSl?pad2(Math.min(23,parseInt(startSl.split(':')[0])+1)):'10';
+    document.getElementById('ev-eh').value=eh2;
+    document.getElementById('ev-em').value='00';
+  }
+  document.getElementById('event-modal').classList.add('open');
+}
+function saveFixedEvent(){
+  const title=document.getElementById('ev-title').value.trim()||'일정';
+  const date=document.getElementById('ev-date').value;
+  const startTime=document.getElementById('ev-sh').value+':'+document.getElementById('ev-sm').value;
+  const endTime=document.getElementById('ev-eh').value+':'+document.getElementById('ev-em').value;
+  if(!date)return;
+  if(editingEventId){
+    const ev=G.events.find(e=>e.id===editingEventId);
+    if(ev){ev.title=title;ev.date=date;ev.startTime=startTime;ev.endTime=endTime;}
+  }else{
+    G.events.push({id:'ev_'+Date.now(),title,date,startTime,endTime});
+  }
+  debounceSave();closeModal('event-modal');renderAll();
+}
+function deleteFixedEvent(){
+  if(!editingEventId)return;
+  G.events=G.events.filter(e=>e.id!==editingEventId);
+  debounceSave();closeModal('event-modal');renderAll();
+}
+function isEventAt(date,sl){
+  const sm=toMin(sl);
+  return G.events.filter(e=>normDate(e.date)===date&&toMin(e.startTime)<=sm&&sm<toMin(e.endTime));
 }
 
 // ── SCHEDULE ACTIONS ──
 function submitSched(){
-  const i=G.act,rid=G.selRehearsal;if(!rid)return;
+  const i=G.act,rid=G.selReh;if(!rid)return;
   const ne=document.getElementById('ni'),pe=document.getElementById('pi');
   const nm=(ne?.value||'').trim()||G.tm[i].name,pr=(pe?.value||'').trim();
-  if(!pr){G.tm[i].warn='내용을 입력해주세요.';renderSb();return;}
+  if(!pr){G.tm[i].warn='내용을 입력해주세요.';renderSbs();return;}
   const mid=new Date(weekStart);mid.setDate(mid.getDate()+3);
   const yr=mid.getFullYear(),mo=mid.getMonth();
   const newSlots=parseSchedule(pr,yr,mo);
-  if(!newSlots.length){G.tm[i].warn='인식된 일정이 없어요.';renderSb();return;}
+  if(!newSlots.length){G.tm[i].warn='인식된 일정이 없어요.';renderSbs();return;}
   const existing=getSlots(i,rid),existingKeys=new Set(existing.map(slotsKey));
   setSlots(i,rid,[...existing,...newSlots.filter(s=>!existingKeys.has(slotsKey(s)))]);
   G.tm[i]={...G.tm[i],name:nm,warn:''};
   if(pe)pe.value='';debounceSave();renderAll();
 }
-function deleteSlot(tmIdx,rid,key){setSlots(tmIdx,rid,getSlots(tmIdx,rid).filter(s=>slotsKey(s)!==key));debounceSave();renderAll();}
-function clearAll(){if(!G.selRehearsal)return;setSlots(G.act,G.selRehearsal,[]);debounceSave();renderAll();}
+function deleteSlot(ti,rid,key){setSlots(ti,rid,getSlots(ti,rid).filter(s=>slotsKey(s)!==key));debounceSave();renderAll();}
+function clearAll(){if(!G.selReh)return;setSlots(G.act,G.selReh,[]);debounceSave();renderAll();}
 
 // ── RENDER ──
 function weekDates(){return Array.from({length:7},(_,i)=>{const d=new Date(weekStart);d.setDate(d.getDate()+i);return d;});}
 function renderAll(){renderSbs();renderWeek();renderLgnd();}
 
 function renderSbs(){
-  const sbs=document.getElementById('sbs');
-  const rid=G.selRehearsal;
-  const i=G.act,c=CLR[i];
+  const rid=G.selReh,i=G.act,c=CLR[i];
+  const today=dateStr(now);
 
-  // ── Concerts section ──
-  const concertHtml=G.concerts.length
-    ?G.concerts.map((c2,ci)=>`<div class="concert-chip" onclick="openConcertDetail(${ci})"><div class="concert-chip-dot"></div><span class="concert-chip-name">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`).join('')
-    :`<div style="font-size:12px;color:#374151;padding:4px 0">공연 일정이 없어요.</div>`;
+  // ── Concert list (upcoming + past) ──
+  const sorted=[...G.concerts].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const upcoming=sorted.filter(c2=>!c2.date||c2.date>=today);
+  const past=sorted.filter(c2=>c2.date&&c2.date<today);
+  const upHtml=upcoming.length
+    ?upcoming.map(c2=>{const idx=G.concerts.indexOf(c2);return`<div class="concert-chip" onclick="openConcertDetail(${idx})"><div class="concert-chip-dot"></div><span class="concert-chip-name">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`;}).join('')
+    :`<div class="empty-msg">예정된 공연 없음</div>`;
+  const pastHtml=past.length?`<div class="past-toggle" onclick="G.showPastConcerts=!G.showPastConcerts;renderSbs()">
+    ${G.showPastConcerts?'▾':'▸'} 지난 공연 ${past.length}개
+  </div>${G.showPastConcerts?past.map(c2=>{const idx=G.concerts.indexOf(c2);return`<div class="concert-chip" style="opacity:.6" onclick="openConcertDetail(${idx})"><div class="concert-chip-dot" style="background:#94a3b8"></div><span class="concert-chip-name" style="color:#94a3b8">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`;}).join(''):''}`:'' ;
 
-  // ── Rehearsals section ──
+  // ── Rehearsal list ──
   const rehHtml=G.rehearsals.length
-    ?G.rehearsals.map((r,ri)=>{const active=G.selRehearsal===rId(r);return`<div class="reh-item${active?' active':''}" onclick="selectRehearsal('${esc(rId(r))}')"><div class="reh-dot"></div><span class="reh-name">${esc(r.title)}</span><span class="reh-detail-btn" onclick="event.stopPropagation();openRehDetail(${ri})">상세</span></div>`;}).join('')
-    :`<div style="font-size:12px;color:#374151;padding:4px 0">합주 일정이 없어요.</div>`;
+    ?G.rehearsals.map((r,ri)=>`<div class="reh-item${G.selReh===rId(r)?' active':''}" onclick="selectReh('${esc(rId(r))}')"><div class="reh-dot"></div><span class="reh-name">${esc(r.title)}</span><button class="reh-dbtn" onclick="event.stopPropagation();openRehDetail(${ri})">상세</button></div>`).join('')
+    :`<div class="empty-msg">합주 일정 없음</div>`;
 
-  // ── Member tabs ──
+  // ── Member tabs + input ──
   const tabs=G.tm.map((_,j)=>`<button class="ttab" style="border-color:${CLR[j].bg};background:${G.act===j?CLR[j].bg:'transparent'};color:${G.act===j?'white':CLR[j].bg}" onclick="switchTab(${j})">${esc(G.tm[j].name.slice(0,2))}</button>`).join('');
-
-  // ── Per-member slot preview ──
-  let pvHtml='';
-  if(rid){
+  let inputHtml='';
+  let commonHtml='';
+  if(!rid){
+    inputHtml=`<div class="sb-section"><div class="no-sel"><div class="no-sel-icon">🎸</div>위에서 합주 일정을 선택하면<br>가능한 시간을 입력할 수 있어요.</div></div>`;
+  }else{
+    const reh=G.rehearsals.find(r=>rId(r)===rid);
     const slots=getSlots(i,rid);
+    let pvHtml='';
     if(slots.length){
       const byDate={};slots.forEach(s=>{if(!byDate[s.date])byDate[s.date]=[];byDate[s.date].push(s);});
       const groups=Object.keys(byDate).sort().map(d=>{
@@ -639,41 +685,13 @@ function renderSbs(){
       }).join('');
       pvHtml=`<div class="pvsec"><div class="pvhd"><span>✓ ${slots.length}개 · 클릭 시 삭제</span><span onclick="clearAll()">전체 삭제</span></div><div style="max-height:100px;overflow-y:auto">${groups}</div></div>`;
     }
-  }
-
-  // ── Common times block ──
-  let commonHtml='';
-  if(rid){
-    const submitters=G.tm.filter((_,ti)=>hasSlots(ti,rid));
-    if(submitters.length>0){
-      const common=calcCommonTimes(rid);
-      const formatted=formatCommonTimes(common);
-      const reh=G.rehearsals.find(r=>rId(r)===rid);
-      commonHtml=`<div class="sb-section">
-        <div class="sb-sec-title">${esc(reh?.title||'합주')} · 공통 가능 시간</div>
-        <div class="common-panel">
-          ${submitters.length<5?`<div style="font-size:11px;color:#6ee7b7;margin-bottom:6px">현재 ${submitters.length}/5명 제출</div>`:''}
-          ${formatted&&formatted.length
-            ?formatted.map(f=>`<div class="common-slot-row"><b>${esc(f.text)}</b></div>`).join('')
-            :`<div class="common-none">공통 가능 시간 없음</div>`}
-        </div>
-      </div>`;
-    }
-  }
-
-  // ── Input section ──
-  let inputHtml='';
-  if(!rid){
-    inputHtml=`<div class="sb-section"><div class="no-sel"><div class="no-sel-icon">🎸</div>위에서 합주 일정을 선택하면<br>가능한 시간을 입력할 수 있어요.</div></div>`;
-  }else{
-    const reh=G.rehearsals.find(r=>rId(r)===rid);
     inputHtml=`<div class="sb-section">
       <div class="ttabs">${tabs}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:7px;padding:7px 9px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#a78bfa;flex-shrink:0"></div>
+        <span style="font-size:12px;font-weight:600;color:#c4b5fd">${esc(reh?.title||'')}</span>
+      </div>
       <div style="border-left:3px solid ${c.bg};padding-left:9px;margin-bottom:11px">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:7px;padding:7px 9px">
-          <div style="width:7px;height:7px;border-radius:50%;background:#a78bfa;flex-shrink:0"></div>
-          <span style="font-size:12px;font-weight:600;color:#c4b5fd">${esc(reh?.title||'')}</span>
-        </div>
         <label class="lbl">이름</label>
         <input id="ni" class="ni" value="${esc(G.tm[i].name)}" placeholder="이름 입력">
       </div>
@@ -684,27 +702,42 @@ function renderSbs(){
       ${pvHtml}
       <div class="hint"><b>지원 형식</b><br>3월 10일 오후 9-11시 / 3/2 오후 9시 이후<br>매주 월, 수 오전 9-12시 / 화목 저녁</div>
     </div>`;
+
+    // Common times
+    const subs=G.tm.filter((_,ti)=>hasSlots(ti,rid));
+    if(subs.length){
+      const common=calcCommonTimes(rid);
+      const formatted=fmtCommonTimes(common);
+      commonHtml=`<div class="sb-section">
+        <div class="sb-sec-hd"><span class="sb-sec-hd-title">공통 가능 시간</span></div>
+        <div class="common-panel">
+          <div class="common-panel-hd">✓ ${esc(reh?.title||'')} · ${subs.length}/5명 제출</div>
+          ${formatted&&formatted.length
+            ?formatted.map(f=>`<div class="common-row"><b>${esc(f.text)}</b></div>`).join('')
+            :`<div class="common-none">공통 가능 시간 없음</div>`}
+        </div>
+      </div>`;
+    }
   }
 
   // ── Team status ──
   const sub=rid?G.tm.filter((_,ti)=>hasSlots(ti,rid)).length:0;
-  const tstatHtml=rid?`
-    <div class="tslbl">${esc(G.rehearsals.find(r=>rId(r)===rid)?.title||'')} 팀 현황 (${sub}/5)</div>
-    ${G.tm.map((t,ti)=>{const ok=rid&&hasSlots(ti,rid);return`<div class="tsi"><div class="tsdot" style="background:${ok?CLR[ti].bg:'#1e293b'}"></div><span style="font-size:12px;color:${ok?'#e2e8f0':'#374151'}">${esc(t.name)}</span>${ok?`<span style="color:#4ade80;font-size:11px;margin-left:auto">✓</span>`:''}</div>`;}).join('')}`:'';
-
-  sbs.innerHTML=`
+  const reh=G.rehearsals.find(r=>rId(r)===rid);
+  document.getElementById('sbs').innerHTML=`
     <div class="sb-section">
-      <div class="sb-sec-title">🎤 공연 일정 <span onclick="document.getElementById('concert-modal').classList.add('open');document.getElementById('concert-ta').value='';document.getElementById('concert-preview').style.display='none'">+ 추가</span></div>
-      ${concertHtml}
+      <div class="sb-sec-hd"><span class="sb-sec-hd-title">🎤 공연 일정</span><button class="sb-sec-hd-btn" onclick="document.getElementById('concert-modal').classList.add('open');document.getElementById('concert-ta').value='';document.getElementById('concert-preview').style.display='none'">+ 추가</button></div>
+      ${upHtml}${pastHtml}
     </div>
     <div class="sb-section">
-      <div class="sb-sec-title">🎸 합주 일정 <span onclick="document.getElementById('rehearsal-modal').classList.add('open');document.getElementById('rehearsal-title-input').value=''">+ 추가</span></div>
+      <div class="sb-sec-hd"><span class="sb-sec-hd-title">🎸 합주 일정</span><button class="sb-sec-hd-btn" onclick="document.getElementById('rehearsal-modal').classList.add('open');document.getElementById('rehearsal-title-input').value=''">+ 추가</button></div>
       ${rehHtml}
     </div>
     ${commonHtml}
-    ${inputHtml}
-  `;
-  document.getElementById('tstat').innerHTML=`<div style="padding:10px 14px">${tstatHtml}</div>`;
+    ${inputHtml}`;
+  document.getElementById('tstat').innerHTML=rid?`<div style="padding:9px 14px">
+    <div class="tslbl">${esc(reh?.title||'')} 팀 현황 (${sub}/5)</div>
+    ${G.tm.map((t,ti)=>{const ok=rid&&hasSlots(ti,rid);return`<div class="tsi"><div class="tsdot" style="background:${ok?CLR[ti].bg:'#1e293b'}"></div><span style="font-size:12px;color:${ok?'#e2e8f0':'#374151'}">${esc(t.name)}</span>${ok?`<span style="color:#4ade80;font-size:11px;margin-left:auto">✓</span>`:''}</div>`;}).join('')}
+  </div>`:'';
 }
 
 function renderWeek(){
@@ -715,20 +748,20 @@ function renderWeek(){
     ?`${d0.getFullYear()}년 ${d0.getMonth()+1}월 ${d0.getDate()}일 – ${d6.getDate()}일`
     :`${d0.getMonth()+1}/${d0.getDate()} – ${d6.getMonth()+1}/${d6.getDate()}`;
 
-  const rid=G.selRehearsal;
+  const rid=G.selReh;
+  // anySubmitted: show colored bars for ALL rehearsals combined
   const anySubmitted=G.tm.map((_,ti)=>Object.values(G.tm[ti].slots||{}).some(arr=>arr.length>0));
-  // For all-free: only count submitters for selected rehearsal
-  const selSubmitters=rid?G.tm.map((_,ti)=>hasSlots(ti,rid)):G.tm.map(()=>false);
-  const selCount=selSubmitters.filter(Boolean).length;
-  // Precompute common free set for selected rehearsal
+  // Common set for selected rehearsal
   const commonSet=new Set();
+  const selSubs=rid?G.tm.map((_,ti)=>hasSlots(ti,rid)):G.tm.map(()=>false);
+  const selCount=selSubs.filter(Boolean).length;
   if(rid&&selCount>0){
-    const dates2=weekDates();
-    for(const d of dates2){
+    for(const d of dates){
       const ds=dateStr(d);
       for(const sl of SLOTS){
-        const allFree=G.tm.every((t,ti)=>!selSubmitters[ti]||!isBz(getSlots(ti,rid),ds,sl));
-        if(selCount>0&&allFree)commonSet.add(ds+'|'+sl);
+        // ALL submitters must be available (isAvail = true) at this slot
+        if(selSubs.every((ok,ti)=>!ok||isAvail(getSlots(ti,rid),ds,sl)))
+          commonSet.add(ds+'|'+sl);
       }
     }
   }
@@ -749,23 +782,46 @@ function renderWeek(){
     html+=`<div class="tl${isHour?' hr':''}" style="${isLast?'font-size:8px':''}">${label}</div>`;
     for(const d of dates){
       const ds=dateStr(d);
-      const busyAllIdxs=G.tm.reduce((acc,t,ti)=>{if(anySubmitted[ti]&&isBz(getAllSlots(ti),ds,sl))acc.push(ti);return acc;},[]);
       const isCommon=commonSet.has(ds+'|'+sl);
-      // Check if this is the start of a common block (slot above was not common)
       const prevSl=SLOTS[SLOTS.indexOf(sl)-1];
       const isCommonStart=isCommon&&(!prevSl||!commonSet.has(ds+'|'+prevSl));
+      // Availability bars (all rehearsals, not common slots)
+      const availIdxs=!isCommon?G.tm.reduce((acc,t,ti)=>{if(anySubmitted[ti]&&isAvail(getAllSlots(ti),ds,sl))acc.push(ti);return acc;},[]):[];
+      // Fixed events
+      const evs=isEventAt(ds,sl);
+      const hasEv=evs.length>0;
+      const evStart=hasEv&&toMin(evs[0].startTime)===toMin(sl);
+      const evEnd=hasEv&&G.events.some(e=>normDate(e.date)===ds&&toMin(e.endTime)-10===toMin(sl));
+      // Concert timetable
       const cIdxDay=G.concerts.findIndex(c=>normDate(c.date)===ds);
       const concert=cIdxDay>=0?G.concerts[cIdxDay]:null;
-      const ttEv=concert?ttEventAt(concert,sl):null;
+      const ttEv=concert?ttEvAt(concert,sl):null;
       const ttCls=ttEv?ttColor(ttEv.label).cls:'';
       const isTtStart=ttEv&&toMin(ttEv.time)===toMin(sl);
       let cCls='';
       if(concert){cCls=' c-col';if(sl===FIRST)cCls+=' c-top';if(sl===LAST)cCls+=' c-bot';}
-      const cls=`slot${isHour?' hr-top':''}${isCommon&&!ttEv?' all-free':''}${isCommonStart?' all-free-start':''}${ttCls?' '+ttCls:''}${cCls}`;
+      const cls=[
+        'slot',
+        isHour?'hr-top':'',
+        isCommon&&!ttEv&&!hasEv?'all-avail':'',
+        isCommonStart&&!ttEv&&!hasEv?'all-avail-start':'',
+        hasEv&&!ttEv?'has-event':'',
+        evStart?'event-start':'',
+        evEnd?'event-end':'',
+        ttCls,cCls
+      ].filter(Boolean).join(' ');
       let inner='';
-      if(busyAllIdxs.length>0&&!ttEv&&!isCommon){const w=Math.floor(100/busyAllIdxs.length);inner=busyAllIdxs.map((ti,idx)=>`<div class="sbar" style="background:${CLR[ti].bg};left:${idx*w}%;width:${idx===busyAllIdxs.length-1?100-idx*w:w}%"></div>`).join('');}
+      if(availIdxs.length>0&&!ttEv&&!hasEv){
+        const w=Math.floor(100/availIdxs.length);
+        inner=availIdxs.map((ti,idx)=>`<div class="avail-bar" style="background:${CLR[ti].bg};left:${idx*w}%;width:${idx===availIdxs.length-1?100-idx*w:w}%"></div>`).join('');
+      }
       if(isTtStart){const col=ttColor(ttEv.label);inner+=`<span class="tt-lbl" style="color:${col.text}">${esc(ttEv.label)}</span>`;}
-      html+=`<div class="${cls}">${inner}</div>`;
+      if(evStart&&evs[0])inner+=`<span class="event-lbl">${esc(evs[0].title)}</span>`;
+      // Click handler
+      let clickFn='';
+      if(hasEv)clickFn=`openEventModal('${ds}','${sl}','${evs[0].id}')`;
+      else clickFn=`openEventModal('${ds}','${sl}',null)`;
+      html+=`<div class="${cls}" onclick="${clickFn}">${inner}</div>`;
     }
   }
   document.getElementById('wgrid').innerHTML=html;
@@ -774,21 +830,19 @@ function renderWeek(){
 }
 
 function renderLgnd(){
-  const rid=G.selRehearsal;
+  const rid=G.selReh;
   const sub=rid?G.tm.filter((_,i)=>hasSlots(i,rid)):[];
   const wDates=weekDates().map(dateStr);
   const hasConcert=G.concerts.some(c=>wDates.includes(normDate(c.date)));
-  const hasCommon=rid&&sub.length>0&&SLOTS.some(sl=>wDates.some(ds=>commonSet&&commonSet.has(ds+'|'+sl)));
+  const hasEv=G.events.some(e=>wDates.includes(normDate(e.date)));
   let html=sub.length
     ?sub.map(t=>{const j=G.tm.indexOf(t);return`<div class="lgi"><div class="lgdot" style="background:${CLR[j].bg}"></div>${esc(t.name)}</div>`;}).join('')
-    :`<span style="color:#94a3b8;font-size:11px">합주 선택 후 일정 추가 시 표시</span>`;
-  if(rid&&sub.length>0)html+=`<div class="lgi"><div class="lgfree"></div>전원 가능</div>`;
+    :`<span style="color:#94a3b8;font-size:11px">합주 선택 후 가능 시간 추가 시 표시</span>`;
+  if(rid&&sub.length)html+=`<div class="lgi"><div class="lgavail"></div>전원 가능</div>`;
   if(hasConcert)html+=`<div class="lgi"><div class="lgconcert"></div>공연일</div>`;
+  if(hasEv)html+=`<div class="lgi"><div class="lgevent"></div>일정</div>`;
   document.getElementById('lgnd').innerHTML=html;
 }
-
-// commonSet needs to be accessible in renderLgnd — hoist to module scope
-let commonSet=new Set();
 
 function switchTab(j){const ne=document.getElementById('ni');if(ne)G.tm[G.act].name=ne.value;G.act=j;renderSbs();}
 document.getElementById('pbtn').onclick=()=>{weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()-7);const w=document.querySelector('.wgrid-wrap');if(w)w.dataset.scrolled='';renderWeek();renderLgnd();};
