@@ -354,11 +354,27 @@ function parseConcertText(raw){
   const tryDate=line=>{const m=line.match(/(\d{1,2})[\/월]\s*(\d{1,2})/);if(m&&!date)date=`${now.getFullYear()}-${pad2(parseInt(m[1]))}-${pad2(parseInt(m[2]))}`; };
   for(const line of lines){
     if(/^[\*★◆]+\s*\S/.test(line)){name=line.replace(/^[\*★◆\s]+/,'').trim();continue;}
+
+    // Numbered section headers: "1. 일시", "2. 장소", etc.
     if(/^\d+\.\s*(?:일시|일자|날짜|date)\s*[:：]?/i.test(line)){section='date';tryDate(line);continue;}
     if(/^\d+\.\s*(?:장소|venue|place)\s*[:：]?/i.test(line)){section='venue';const iv=line.replace(/^\d+\.\s*(?:장소|venue|place)\s*[:：]?\s*/i,'').trim();if(iv&&!venue)venue=iv;continue;}
     if(/^\d+\.\s*(?:타임테이블|timetable|time)\s*[:：]?/i.test(line)){section='timetable';continue;}
     if(/^\d+\.\s*(?:셋리스트|setlist|set)\s*[:：]?/i.test(line)){section='setlist';continue;}
+    if(/^\d+\.\s*(?:인원|멤버|member)\s*[:：]?/i.test(line)){section='skip';continue;}
+
+    // Pipe-style key-value lines: "일정 ㅣ 5/23(토)" / "장소 ㅣ 연세대학교 노천극장"
+    const pipeM=line.match(/^([가-힣a-zA-Z\s]+?)\s*[ㅣ|]\s*(.+)/);
+    if(pipeM){
+      const key=pipeM[1].trim(),val=pipeM[2].trim();
+      if(/일정|일시|일자|날짜|date/i.test(key)){tryDate(val);continue;}
+      if(/장소|venue|place/i.test(key)){if(!venue)venue=val;continue;}
+      if(/타임테이블|timetable/i.test(key)){section='timetable';continue;}
+    }
+
+    // Inline "일시:" or "일자:" colon style
     if(/(?:일시|일자)\s*[:：]/i.test(line)){section='date';tryDate(line);continue;}
+
+    if(section==='skip')continue;
     if(section==='date'){tryDate(line);}
     if(section==='venue'){const v=line.replace(/^[-\s\d.]+/,'').replace(/^(?:장소)\s*[:：]\s*/,'').trim();if(v&&!venue)venue=v;}
     if(section==='timetable'){
@@ -451,7 +467,7 @@ function mergeData(remote,local){
 // ── STATE ──
 function getWeekStart(base){const d=new Date(base);const day=d.getDay();const diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);d.setHours(0,0,0,0);return d;}
 let weekStart=getWeekStart(now);
-let G={act:0,selReh:null,showPastConcerts:false,tm:NAMES.map(n=>({name:n,slots:{},warn:''})),concerts:[],rehearsals:[],events:[]};
+let G={act:0,selReh:null,showPastConcerts:false,showUpcomingMore:false,tm:NAMES.map(n=>({name:n,slots:{},warn:''})),concerts:[],rehearsals:[],events:[]};
 let saveTimeout=null,pendingConcertParsed=null,editingEventId=null;
 
 function getSlots(ti,rid){return(G.tm[ti].slots&&G.tm[ti].slots[rid])||[];}
@@ -655,12 +671,18 @@ function renderSbs(){
   const sorted=[...G.concerts].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
   const upcoming=sorted.filter(c2=>!c2.date||c2.date>=today);
   const past=sorted.filter(c2=>c2.date&&c2.date<today);
-  const upHtml=upcoming.length
-    ?upcoming.map(c2=>{const idx=G.concerts.indexOf(c2);return`<div class="concert-chip" onclick="openConcertDetail(${idx})"><div class="concert-chip-dot"></div><span class="concert-chip-name">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`;}).join('')
+  // Nearest upcoming = first in sorted upcoming list
+  const nearest=upcoming[0]||null;
+  const restUpcoming=upcoming.slice(1);
+  const nearestHtml=nearest
+    ?`<div class="concert-chip" onclick="openConcertDetail(${G.concerts.indexOf(nearest)})"><div class="concert-chip-dot"></div><span class="concert-chip-name">${esc(nearest.name)}</span><span class="concert-chip-date">${formatDate(nearest.date)}</span></div>`
     :`<div class="empty-msg">예정된 공연 없음</div>`;
+  const moreUpHtml=restUpcoming.length?`<div class="past-toggle" onclick="G.showUpcomingMore=!G.showUpcomingMore;renderSbs()">
+    ${G.showUpcomingMore?'▾':'▸'} 다음 공연 ${restUpcoming.length}개
+  </div>${G.showUpcomingMore?restUpcoming.map(c2=>{const idx=G.concerts.indexOf(c2);return`<div class="concert-chip" onclick="openConcertDetail(${idx})"><div class="concert-chip-dot"></div><span class="concert-chip-name">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`;}).join(''):''}`:'' ;
   const pastHtml=past.length?`<div class="past-toggle" onclick="G.showPastConcerts=!G.showPastConcerts;renderSbs()">
     ${G.showPastConcerts?'▾':'▸'} 지난 공연 ${past.length}개
-  </div>${G.showPastConcerts?past.map(c2=>{const idx=G.concerts.indexOf(c2);return`<div class="concert-chip" style="opacity:.6" onclick="openConcertDetail(${idx})"><div class="concert-chip-dot" style="background:#94a3b8"></div><span class="concert-chip-name" style="color:#94a3b8">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`;}).join(''):''}`:'' ;
+  </div>${G.showPastConcerts?past.map(c2=>{const idx=G.concerts.indexOf(c2);return`<div class="concert-chip" style="opacity:.6" onclick="openConcertDetail(${idx})"><div class="concert-chip-dot" style="background:#94a3b8"></div><span class="concert-chip-name" style="color:#94a3b8">${esc(c2.name)}</span><span class="concert-chip-date">${formatDate(c2.date)}</span></div>`;}).join(''):''}`:'';
 
   // ── Rehearsal list ──
   const rehHtml=G.rehearsals.length
@@ -726,7 +748,7 @@ function renderSbs(){
   document.getElementById('sbs').innerHTML=`
     <div class="sb-section">
       <div class="sb-sec-hd"><span class="sb-sec-hd-title">🎤 공연 일정</span><button class="sb-sec-hd-btn" onclick="document.getElementById('concert-modal').classList.add('open');document.getElementById('concert-ta').value='';document.getElementById('concert-preview').style.display='none'">+ 추가</button></div>
-      ${upHtml}${pastHtml}
+      ${nearestHtml}${moreUpHtml}${pastHtml}
     </div>
     <div class="sb-section">
       <div class="sb-sec-hd"><span class="sb-sec-hd-title">🎸 합주 일정</span><button class="sb-sec-hd-btn" onclick="document.getElementById('rehearsal-modal').classList.add('open');document.getElementById('rehearsal-title-input').value=''">+ 추가</button></div>
