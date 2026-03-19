@@ -759,12 +759,16 @@ function renderSbs(){
     ?G.rehearsals.map((r,ri)=>`<div class="reh-item${G.selReh===rId(r)?' active':''}" onclick="selectReh('${esc(rId(r))}')"><div class="reh-dot"></div><span class="reh-name">${esc(r.title)}</span><button class="reh-dbtn" onclick="event.stopPropagation();openRehDetail(${ri})">상세</button></div>`).join('')
     :`<div class="empty-msg">합주 일정 없음</div>`;
 
-  // ── Member tabs + input ──
+  // ── Member tabs: always visible ──
   const tabs=G.tm.map((_,j)=>`<button class="ttab" style="border-color:${CLR[j].bg};background:${G.act===j?CLR[j].bg:'transparent'};color:${G.act===j?'white':CLR[j].bg}" onclick="switchTab(${j})">${esc(G.tm[j].name.slice(0,2))}</button>`).join('');
+
   let inputHtml='';
   let commonHtml='';
   if(!rid){
-    inputHtml=`<div class="sb-section"><div class="no-sel"><div class="no-sel-icon">🎸</div>위에서 합주 일정을 선택하면<br>가능한 시간을 입력할 수 있어요.</div></div>`;
+    inputHtml=`<div class="sb-section reh-input-section">
+      <div class="ttabs">${tabs}</div>
+      <div class="no-sel"><div class="no-sel-icon">🎸</div>위에서 합주 일정을 선택하면<br>가능한 시간을 입력할 수 있어요.</div>
+    </div>`;
   }else{
     const reh=G.rehearsals.find(r=>rId(r)===rid);
     const slots=getSlots(i,rid);
