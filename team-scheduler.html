@@ -174,6 +174,71 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
 .del-btn:hover{background:#fef2f2}
 .no-sel{text-align:center;padding:22px 14px;color:#374151;font-size:12.5px;line-height:1.8}
 .no-sel-icon{font-size:24px;margin-bottom:6px}
+
+/* ── MOBILE ── */
+@media(max-width:767px){
+  /* App becomes full-page scroll */
+  #app{height:auto;overflow:visible}
+  #wrap{flex-direction:column;height:auto;overflow:visible}
+
+  /* Sidebar = full width, auto height */
+  #sb{width:100%;min-width:0;overflow:visible;height:auto}
+  #sbs{overflow:visible;height:auto}
+  #tstat{border-top:1px solid rgba(255,255,255,.06)}
+
+  /* Sync bar at bottom of sidebar */
+  #sync-bar{text-align:left;padding:6px 16px 10px}
+
+  /* Calendar scroll divider */
+  #cal-divider{display:flex;align-items:center;gap:12px;background:#1a1a2e;padding:14px 16px;border-top:2px solid rgba(124,58,237,.3);cursor:pointer}
+  #cal-divider span{font-size:13px;font-weight:600;color:#a78bfa;flex:1}
+  #cal-divider .arr{font-size:18px;color:#a78bfa;transition:.2s}
+  #cal-divider.collapsed .arr{transform:rotate(-90deg)}
+
+  /* Calendar section below */
+  #mn{height:auto;overflow:visible;display:none}
+  #mn.mob-visible{display:flex;flex-direction:column;min-height:600px}
+  .wgrid-wrap{overflow:visible;height:auto}
+  .wgrid-wrap .wgrid{min-height:400px}
+
+  /* Bigger member tabs on mobile */
+  .ttab{height:42px;font-size:13px}
+
+  /* Bigger input area */
+  .ti{min-height:88px;font-size:13px}
+  .ti::placeholder{font-size:13px}
+
+  /* Bigger submit button */
+  .bsub{padding:13px 0;font-size:15px;font-weight:700;border-radius:12px}
+
+  /* Rehearsal section more prominent */
+  .sb-section.reh-input-section{padding:16px}
+  .sb-section.reh-input-section .lbl{font-size:11px}
+  .sb-section.reh-input-section .ni{padding:11px 12px;font-size:14px}
+
+  /* Common times panel bigger text */
+  .common-row{font-size:14px;line-height:2}
+  .common-panel-hd{font-size:12.5px}
+
+  /* Section headings */
+  .sb-sec-hd-title{font-size:11px}
+  .sb-sec-hd-btn{font-size:12px;padding:4px 11px}
+
+  /* Concert / rehearsal chips bigger */
+  .concert-chip{padding:8px 10px}
+  .concert-chip-name{font-size:13px}
+  .reh-item{padding:10px 11px}
+  .reh-name{font-size:13.5px}
+  .reh-dbtn{font-size:12px;padding:4px 9px}
+
+  /* Modals full-screen friendly */
+  .modal-box{max-height:92vh}
+  .modal-body{padding:14px 16px}
+}
+/* Desktop: hide divider */
+@media(min-width:768px){
+  #cal-divider{display:none}
+}
 </style>
 </head>
 <body>
@@ -197,6 +262,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Ne
       <div id="sbs"></div>
       <div id="tstat"></div>
       <div id="sync-bar" class="sync-bar"></div>
+    </div>
+    <!-- Mobile: tap to show calendar -->
+    <div id="cal-divider" class="collapsed" onclick="toggleMobileCal()">
+      <span>📅 캘린더 보기</span>
+      <span class="arr">↓</span>
     </div>
     <div id="mn">
       <div class="wnav">
@@ -707,8 +777,7 @@ function renderSbs(){
       }).join('');
       pvHtml=`<div class="pvsec"><div class="pvhd"><span>✓ ${slots.length}개 · 클릭 시 삭제</span><span onclick="clearAll()">전체 삭제</span></div><div style="max-height:100px;overflow-y:auto">${groups}</div></div>`;
     }
-    inputHtml=`<div class="sb-section">
-      <div class="ttabs">${tabs}</div>
+    inputHtml=`<div class="sb-section reh-input-section">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:7px;padding:7px 9px">
         <div style="width:7px;height:7px;border-radius:50%;background:#a78bfa;flex-shrink:0"></div>
         <span style="font-size:12px;font-weight:600;color:#c4b5fd">${esc(reh?.title||'')}</span>
@@ -848,7 +917,8 @@ function renderWeek(){
   }
   document.getElementById('wgrid').innerHTML=html;
   const wrap=document.querySelector('.wgrid-wrap');
-  if(wrap&&wrap.dataset.scrolled!=='1'){wrap.scrollTop=72;wrap.dataset.scrolled='1';}
+  // Only auto-scroll on desktop (mobile is full-page scroll)
+  if(wrap&&wrap.dataset.scrolled!=='1'&&window.innerWidth>=768){wrap.scrollTop=72;wrap.dataset.scrolled='1';}
 }
 
 function renderLgnd(){
@@ -867,6 +937,26 @@ function renderLgnd(){
 }
 
 function switchTab(j){const ne=document.getElementById('ni');if(ne)G.tm[G.act].name=ne.value;G.act=j;renderSbs();}
+
+function toggleMobileCal(){
+  const mn=document.getElementById('mn');
+  const div=document.getElementById('cal-divider');
+  const isVisible=mn.classList.contains('mob-visible');
+  if(isVisible){
+    mn.classList.remove('mob-visible');
+    div.classList.add('collapsed');
+    div.querySelector('span.arr').textContent='↓';
+    div.querySelector('span:first-child').textContent='📅 캘린더 보기';
+  }else{
+    mn.classList.add('mob-visible');
+    div.classList.remove('collapsed');
+    div.querySelector('span.arr').textContent='↑';
+    div.querySelector('span:first-child').textContent='📅 캘린더 닫기';
+    // Render calendar now that it's visible, then scroll to it
+    renderWeek();renderLgnd();
+    setTimeout(()=>div.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }
+}
 document.getElementById('pbtn').onclick=()=>{weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()-7);const w=document.querySelector('.wgrid-wrap');if(w)w.dataset.scrolled='';renderWeek();renderLgnd();};
 document.getElementById('xbtn').onclick=()=>{weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()+7);const w=document.querySelector('.wgrid-wrap');if(w)w.dataset.scrolled='';renderWeek();renderLgnd();};
 loadConfig();
